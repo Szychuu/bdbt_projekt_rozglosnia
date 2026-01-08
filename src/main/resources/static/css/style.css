@@ -1,0 +1,9 @@
+.imageBackground {
+    background-image: url('../assets/img/logopw.png');
+    background-size: 400px;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* background-attachment: fixed; */
+    width: 600px;
+    height: 600px;
+}
