@@ -105,7 +105,7 @@
             <artifactId>ojdbc17</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>G:\Downloads - From Disk C/ojdbc17.jar</systemPath>
+            <systemPath>${project.basedir}/libs/ojdbc17.jar</systemPath>
         </dependency>
 
     </dependencies>
