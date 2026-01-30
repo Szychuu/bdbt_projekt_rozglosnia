@@ -4,36 +4,41 @@
     <meta charset="UTF-8"/>
     <title>Admin Page</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.7/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/css/style_errors.css}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"></script>
 </head>
 <body>
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="/">Spring Boot projekt - część II</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/images/radio_bdbt_logo.png}" alt="Radio BDBT Logo" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/index}">Strona główna</a>
-                </li>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link text-uppercase" th:href="@{/}">Wiadomości</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">Programy</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">O nas</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">Kontakt</a></li>
             </ul>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="">Zalogowany jako <b style="color:lightskyblue; text-transform:capitalize"
-                                                                   sec:authentication="principal.username"></b></a>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" th:hidden="true" name="LogoutForm">
+
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item ms-lg-3">
+                    <form th:action="@{/logout}" method="post" th:hidden="true" id="LogoutForm">
                         <input type="submit" value="Logout" />
                     </form>
-                    <a class="nav-link" href="javascript:document.LogoutForm.submit()">Wyloguj się</a>
+                    <a class="btn btn-action" href="javascript:document.getElementById('LogoutForm').submit()">Wyloguj się</a>
+                </li>
+
+                <li class="nav-item">
+            <span class="nav-link user-info-text">
+                Zalogowany jako <b style="color:#bf7f5b; text-transform:capitalize" sec:authentication="name"></b>
+            </span>
                 </li>
             </ul>
         </div>

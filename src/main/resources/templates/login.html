@@ -1,67 +1,65 @@
-<!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<!--<script>-->
-<!--    history.replaceState('data to be passed', 'Title of the page', "/");-->
-<!--</script>-->
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Login Page</title>
+    <meta charset="UTF-8">
+    <title>Logowanie - Radio BDBT</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.7/css/bootstrap.min.css} "/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/style_login.css}">
 </head>
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/index}">Spring Boot projekt - część II</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/index}">Strona główna</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/login}">Zaloguj (aktywne)</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 mt-5">
-            <form method="post" th:action="@{/login}">
-                <div class="form-group">
-                    <label for="login" style="margin-bottom:5px">Nazwa użytkownika:</label>
-                    <input id="login" type="text" placeholder="Wprowadź login" autocomplete="off" class="form-control" name="username"/>
+
+<div class="login-container">
+    <div class="login-image"></div>
+
+    <div class="login-form-side">
+        <div class="form-box text-start">
+
+            <div class="d-flex justify-content-center mb-4">
+                <img th:src="@{/images/radio_bdbt_logo.png}" alt="Radio BDBT Logo" height="70">
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span>Nieprawidłowy login lub hasło. Spróbuj ponownie.</span>
                 </div>
-                <div class="form-group" style="margin-top:10px">
-                    <label for="password" style="margin-bottom:5px">Hasło:</label>
-                    <input id="password" type="password" placeholder="Wprowadź hasło" autocomplete="off"
-                           class="form-control" name="password"/>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${param.logout}" class="alert alert-success shadow-sm" role="alert">
+                Zostałeś pomyślnie wylogowany.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label small">Nazwa użytkownika lub adres email</label>
+                    <input type="text" id="username" name="username" class="form-control" required autofocus>
                 </div>
-                <div th:if="${param.error}" style="color:red; margin-top:5px; margin-bottom:5px">
-                    BŁĄD: Niepoprawny login lub hasło!
+
+                <div class="mb-4">
+                    <label for="password" class="form-label small">Hasło</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
                 </div>
-                <div style="margin-top:15px">
-                    <button class="btn btn-primary" type="submit" value="Sign In">Zaloguj się</button>
+
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                    <button type="submit" class="btn btn-primary px-4 btn-login">Zaloguj</button>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="remember-me">
+                        <label class="form-check-label small" for="remember-me">Zapamiętaj mnie</label>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-3 border-top">
+                    <a th:href="@{/}" class="text-decoration-none back-link">← Powrót na stronę główną</a>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

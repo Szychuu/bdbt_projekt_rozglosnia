@@ -1,77 +1,89 @@
-<!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Strona główna</title>
-
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.7/css/bootstrap.min.css} "/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-            crossorigin="anonymous"></script>
-    <link th:rel= "stylesheet" th:href="@{/css/style.css}"/>
-
+    <meta charset="UTF-8">
+    <title>Radio BDBT - Twoja Muzyka</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style_main.css}">
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="/">Spring Boot projekt - część II</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/images/radio_bdbt_logo.png}" alt="Radio BDBT Logo" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/login}">Zaloguj</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link text-uppercase" th:href="@{/}">Wiadomości</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#sekcja-programy">Programy</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">O nas</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">Kontakt</a></li>
+                <li class="nav-item ms-lg-3">
+                    <a th:href="@{/login}" class="btn btn-action">Zaloguj się</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 mt-5">
-            <label style="font-size:30px">Witaj na stronie głównej!</label>
-            <div style="font-size:20px">Jeśli chcesz się zalogować, kliknij <a th:href="@{/login}"><b>tutaj</b></a> lub w
-                prawym górnym rogu.
+<header class="hero-section">
+    <div class="overlay"></div>
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-lg-8 text-white">
+                <h6 class="text-uppercase tracking-wider mb-3">Radio BDBT</h6>
+                <h1 class="display-2 fw-bold mb-4">TWOJA MUZYKA<br>TWÓJ ŚWIAT</h1>
+                <p class="lead mb-5 opacity-75">Od klasyki po najnowsze hity – dostarczamy dźwięk, który inspiruje. Dołącz do tysięcy słuchaczy i poczuj rytm Twojego miasta.</p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-hero-outline">Słuchaj online</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="hero-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+</header>
 
+<section class="services-section py-5">
+    <div id="sekcja-programy" class="container text-center py-5">
+        <h2 class="section-title mb-2">Programy i Audycje</h2>
+        <p style="color: rgb(187,125,91)" class="mb-5">Projektujemy nowoczesne i estetyczne przestrzenie dźwiękowe dla Twoich uszu.</p>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-card" style="background-image: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=500');">
+                    <div class="service-overlay">
+                        <h3>Poranny Mix</h3>
+                    </div>
+                </div>
+            </div>
 
-<!-- Table -->
-<div class="mx-auto" style="margin-top:35px; max-width: 80%;">
-    <label style="font-size:25px"><b>Dostępne produkty</b></label>
-    <table class="table" >
-        <thead>
-        <tr>
-            <th>Nr (ID)</th>
-            <th>Nazwa (item name)</th>
-            <th>Ilość (quantity)</th>
-            <th>Kwota (Amount)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="sale : ${listSale}">
-            <td th:text="${sale.id}">ID</td>
-            <td th:text="${sale.item}">Item Name</td>
-            <td th:text="${sale.quantity}">Quantity</td>
-            <td th:text="${sale.amount}">Amount</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+            <div class="col-md-4">
+                <div class="service-card" th:style="'background-image: url(' + @{/images/evening_relax.jpg} + ');'">
+                    <div class="service-overlay">
+                        <h3>Wieczorny Relax</h3>
+                    </div>
+                </div>
+            </div>
 
-<div class="imageBackground" style="margin: auto"></div>
+            <div class="col-md-4">
+                <div class="service-card" th:style="'background-image: url(' + @{/images/drive.png} + ');'">
+                    <div class="service-overlay">
+                        <h3>Lista Przebojów</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.7/js/bootstrap.bundle.min.js}"></script>
 
 </body>
 </html>

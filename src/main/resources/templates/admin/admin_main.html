@@ -1,137 +1,163 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleafextras-springsecurity6">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleafextras-springsecurity6">
 <head>
     <meta charset="UTF-8"/>
-    <title>Admin Page</title>
+    <title>Panel Administratora - Rozgłośnia</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.7/css/bootstrap.min.css} "/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/style_admin.css}">
 </head>
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="/">Spring Boot projekt - część II</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bstarget="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/images/radio_bdbt_logo.png}" alt="Radio BDBT Logo" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/index}">Strona główna</a>
-                </li>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link text-uppercase" th:href="@{/}">Wiadomości</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">Programy</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">O nas</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase" href="#">Kontakt</a></li>
             </ul>
 
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="">Zalogowany jako <b style="color:lightskyblue; text-transform:capitalize"
-                                                                   sec:authentication="principal.username"></b></a>
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item ms-lg-3">
+                    <form th:action="@{/logout}" method="post" th:hidden="true" id="LogoutForm">
+                        <input type="submit" value="Logout" />
+                    </form>
+                    <a class="btn btn-action" href="javascript:document.getElementById('LogoutForm').submit()">Wyloguj się</a>
                 </li>
 
                 <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" th:hidden="true" name="LogoutForm">
-                        <input type="submit" value="Logout" />
-                    </form>
-                    <a class="nav-link" href="javascript:document.LogoutForm.submit()">Wyloguj się</a>
+            <span class="nav-link user-info-text">
+                Zalogowany jako <b style="color:#bf7f5b; text-transform:capitalize" sec:authentication="name"></b>
+            </span>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-10 mt-5">
-
             <div class="form-group">
-                <label style="font-size:30px" th:inline="text">Witaj <a
-                        style="color:lightskyblue; text-transform:capitalize"><b
-                        sec:authentication="principal.username"></b></a>
-                    na stronie głównej!</label>
-                <div style="font-size:20px;">Jeśli chcesz się wylogować, wybierz przycisk wyloguj pod tym
-                    tekstem.</div>
+                <label style="font-size:30px" th:inline="text">Witaj <b style="color:rgb(165,109,69); text-transform:capitalize" sec:authentication="name"></b> w panelu zarządczym!</label>
+                <div style="font-size:20px;">Poniżej możesz edytować listę wykonawców lub dodawać nowych artystów do bazy.</div>
             </div>
-
-            <form method="post" th:action="@{/logout}">
-                <div style="margin-top:10px">
-                    <button class="btn btn-primary" type="submit" value="Wyloguj się">Wyloguj się</button>
-                </div>
-            </form>
-
         </div>
     </div>
-    <!-- Table -->
+
+
+    <div class="container">
+        <div th:if="${successMsg}" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <span th:text="${successMsg}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMsg}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <span th:text="${errorMsg}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
     <div style="margin-top:35px">
-        <label style="font-size:25px"><b>Dostępne produkty</b></label>
-        <table class="table" >
-            <thead>
+        <label style="font-size:25px"><b>Zarządzaj Wykonawcami</b></label>
+        <div class="table-container bg-white"> <table class="table table-striped">
+            <thead class="table-dark">
             <tr>
-                <th>Nr (ID)</th>
-                <th>Nazwa (item name)</th>
-                <th>Ilość (quantity)</th>
-                <th>Kwota (Amount)</th>
+                <th>ID</th>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Pseudonim</th>
+                <th>Płeć</th>
+                <th>Miasto</th>
+                <th>Data ur.</th>
                 <th>Operacje</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="sale : ${listSale}" >
-                <form th:action="@{/update}" th:object="${sale}" method="post">
-                    <td><label>
-                        <input type="text" name="id" th:value="${sale.id}" readonly/>
-                    </label></td>
-                    <td><label>
-                        <input type="text" name="item" th:value="${sale.item}"/>
-                    </label></td>
-                    <td><label>
-                        <input type="text" name="quantity" th:value="${sale.quantity}" />
-                    </label></td>
-                    <td><label>
-                        <input type="text" name="amount" th:value="${sale.amount}" />
-                    </label></td>
+            <tr th:each="wykonawca : ${listWykonawca}">
+                <form th:action="@{/update}" method="post">
+                    <td><input type="text" name="nr_wykonawcy" th:value="${wykonawca.nr_wykonawcy}" size="3" readonly class="form-control-plaintext"/></td>
+                    <td><input type="text" name="imie" th:value="${wykonawca.imie}" class="form-control form-control-sm"/></td>
+                    <td><input type="text" name="nazwisko" th:value="${wykonawca.nazwisko}" class="form-control form-control-sm"/></td>
+                    <td><input type="text" name="pseudonim" th:value="${wykonawca.pseudonim}" class="form-control form-control-sm"/></td>
+                    <td><input type="text" name="plec" th:value="${wykonawca.plec}" size="1" class="form-control form-control-sm"/></td>
+                    <td><input type="text" name="miasto" th:value="${wykonawca.miasto}" class="form-control form-control-sm"/></td>
+                    <td><input type="date" name="data_urodzenia" th:value="${wykonawca.data_urodzenia}" class="form-control form-control-sm"/></td>
                     <td>
-                        <button class="btn btn-primary" type="submit">Zapisz</button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-danger" th:href="@{'/delete/' + ${sale.id}}">Usuń</a>
+                        <div class="btn-group">
+                            <button class="btn btn-success btn-sm" type="submit">Zapisz</button>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    th:data-bs-target="'#deleteModal' + ${wykonawca.nr_wykonawcy}">
+                                Usuń
+                            </button>
+                        </div>
                     </td>
                 </form>
+
+                <div class="modal fade" th:id="'deleteModal' + ${wykonawca.nr_wykonawcy}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title">Potwierdzenie usunięcia</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                                Czy na pewno chcesz usunąć wykonawcę:
+                                <strong th:text="${wykonawca.imie + ' ' + wykonawca.nazwisko}">Artysta</strong>?
+                                <p class="text-danger mt-2"><small>Ta operacja jest nieodwracalna.</small></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                                <a th:href="@{'/delete/' + ${wykonawca.nr_wykonawcy}}" class="btn btn-danger">Usuń na zawsze</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </tr>
             </tbody>
         </table>
+        </div>
     </div>
 
-    <form action="/" th:action="@{/save}" th:object="${sale}" method="post">
-        <!-- Table -->
-        <table class = "table">
-            <tr>
-                <td>Nr (ID)</td>
-                <td><label>
-                    <input type="text" size="10" class="narrow-font" th:field="*{id}">
-                </label></td>
-                <td>Nazwa (item name)</td>
-                <td><label>
-                    <input type="text" size="30" class="narrow-font" th:field="*{item}">
-                </label></td>
-                <td>Ilość (quantity)</td>
-                <td><label>
-                    <input type="text" size="10" class="narrow-font" th:field="*{quantity}">
-                </label></td>
-                <td>Kwota (amount)</td>
-                <td><label>
-                    <input type="text" size="10" class="narrow-font" th:field="*{amount}">
-                </label></td>
-                <td colspan = "2"><button class="btn btn-primary" type="submit">Dodaj</button></td>
-            </tr>
-        </table>
-    </form>
+    <div class="card mt-4 mb-5 shadow">
+        <div class="card-header bg-primary text-white"><b>Dodaj nowego wykonawcę</b></div>
+        <div class="card-body">
+            <form th:action="@{/save}" th:object="${wykonawca}" method="post">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>Imię: <input type="text" th:field="*{imie}" class="form-control" required maxlength="50"></td>
+                        <td>Nazwisko: <input type="text" th:field="*{nazwisko}" class="form-control" required maxlength="50"></td>
+                        <td>Pseudonim: <input type="text" th:field="*{pseudonim}" class="form-control" maxlength="50"></td>
+                        <td>Płeć (M/K):
+                            <select th:field="*{plec}" class="form-select" required>
+                                <option value="">Wybierz...</option>
+                                <option value="M">Mężczyzna</option>
+                                <option value="K">Kobieta</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Miasto: <input type="text" th:field="*{miasto}" class="form-control" maxlength="50"></td>
+                        <td>Data urodzenia: <input type="date" th:field="*{data_urodzenia}" class="form-control" required></td>
+                        <td colspan="2" class="align-bottom">
+                            <button class="btn btn-primary w-100" type="submit">Dodaj artystę do bazy</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 </div>
 
+<script th:src="@{/webjars/bootstrap/5.3.7/js/bootstrap.bundle.min.js}"></script>
 
 </body>
 </html>
