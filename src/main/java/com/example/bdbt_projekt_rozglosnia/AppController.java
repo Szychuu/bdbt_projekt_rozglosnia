@@ -23,8 +23,6 @@ public class AppController implements WebMvcConfigurer {
 
     @RequestMapping(value = {"/index", "/"})
     public String viewHomePage(Model model) {
-        List<Wykonawca> listWykonawca = dao.list();
-        model.addAttribute("listWykonawca", listWykonawca);
         return "index";
     }
 
@@ -118,7 +116,7 @@ public class AppController implements WebMvcConfigurer {
 
     @Controller
     public static class DashboardController {
-        @RequestMapping("/perspectives")
+        @RequestMapping(" ")
         public String defaultSuccessUrl(HttpServletRequest request) {
             if (request.isUserInRole("ADMIN")) {
                 return "redirect:/admin_main";

@@ -14,5 +14,5 @@ public class Sluchacz {
     private String nr_telefonu;
     private String miasto;
     private String plec;
-    private String email; // To będzie nasz klucz powiązania z loginem
+    private String email;
 }
